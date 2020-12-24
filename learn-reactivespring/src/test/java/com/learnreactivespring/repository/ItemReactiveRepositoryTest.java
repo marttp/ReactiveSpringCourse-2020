@@ -3,7 +3,7 @@ package com.learnreactivespring.repository;
 import com.learnreactivespring.document.Item;
 import java.util.Arrays;
 import java.util.List;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
@@ -25,13 +25,15 @@ public class ItemReactiveRepositoryTest {
   @Autowired
   ItemReactiveRepository itemReactiveRepository;
 
-  List<Item> itemList = Arrays.asList(new Item(null, "Samsung TV", 400.0),
+  List<Item> itemList = Arrays.asList(
+      new Item(null, "Samsung TV", 400.0),
       new Item(null, "LG TV", 420.0),
       new Item(null, "Apple Watch", 299.99),
       new Item(null, "Beats Headphones", 149.99),
-      new Item("ABC", "Bose Headphones", 149.99));
+      new Item("ABC", "Bose Headphones", 149.99)
+  );
 
-  @BeforeAll
+  @BeforeEach
   public void setUp() {
     itemReactiveRepository.deleteAll()
         .thenMany(Flux.fromIterable(itemList))
@@ -40,7 +42,6 @@ public class ItemReactiveRepositoryTest {
           System.out.println("Inserted Item is :" + item);
         }))
         .blockLast();
-
   }
 
   @Test
@@ -62,7 +63,7 @@ public class ItemReactiveRepositoryTest {
   @Test
   public void findItemByDescription() {
     StepVerifier.create(
-        itemReactiveRepository.findByDescription("Bose Headphones").log("findItemByDescrition : "))
+        itemReactiveRepository.findByDescription("Bose Headphones").log("findItemByDescription : "))
         .expectSubscription()
         .expectNextCount(1)
         .verifyComplete();

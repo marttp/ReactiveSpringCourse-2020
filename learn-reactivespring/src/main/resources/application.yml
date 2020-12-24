@@ -3,31 +3,25 @@ spring:
     active: dev
 ---
 spring:
-  data:
-    mongodb:
-      host: localhost
-      port: 27017
-      database: learn
+  data.mongodb:
+    uri: mongodb://root:123456789@localhost:27017/learn?authSource=admin
   config:
     activate:
       on-profile: dev
 ---
 spring:
-  data:
-    mongodb:
-      host: localhost
-      port: 27017
-      database: learn
+  data.mongodb:
+    uri: mongodb://root:123456789@localhost:27017/learn?authSource=admin
   config:
     activate:
       on-profile: nonprod
 ---
 spring:
-  data:
-    mongodb:
-      host: localhost
-      port: 27017
-      database: learn
+  data.mongodb:
+    uri: mongodb://root:123456789@localhost:27017/learn?authSource=admin
   config:
     activate:
       on-profile: prod
+---
+spring:
+  profiles: test

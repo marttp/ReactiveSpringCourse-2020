@@ -28,16 +28,16 @@ public class ItemDataInitializer implements CommandLineRunner {
   final
   ItemReactiveCappedRepository itemReactiveCappedRepository;
   final
-  ReactiveMongoOperations reactiveMongoOperations;
+  MongoOperations mongoOperations;
 
   public ItemDataInitializer(
       ItemReactiveRepository itemReactiveRepository,
       ItemReactiveCappedRepository itemReactiveCappedRepository,
-      ReactiveMongoOperations reactiveMongoOperations
+      MongoOperations mongoOperations
   ) {
     this.itemReactiveRepository = itemReactiveRepository;
     this.itemReactiveCappedRepository = itemReactiveCappedRepository;
-    this.reactiveMongoOperations = reactiveMongoOperations;
+    this.mongoOperations = mongoOperations;
   }
 
   @Override
@@ -48,9 +48,9 @@ public class ItemDataInitializer implements CommandLineRunner {
   }
 
   private void createCappedCollection() {
-    reactiveMongoOperations.dropCollection(ItemCapped.class);
+    mongoOperations.dropCollection(ItemCapped.class);
     CollectionOptions options = CollectionOptions.empty().capped().maxDocuments(20).size(50000);
-    reactiveMongoOperations.createCollection(ItemCapped.class, options);
+    mongoOperations.createCollection(ItemCapped.class, options);
   }
 
   public List<Item> data() {

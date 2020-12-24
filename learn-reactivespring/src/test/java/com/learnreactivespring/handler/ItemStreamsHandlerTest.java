@@ -15,6 +15,7 @@ import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWeb
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.mongodb.core.CollectionOptions;
+import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.ReactiveMongoOperations;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
@@ -35,7 +36,7 @@ public class ItemStreamsHandlerTest {
   ItemReactiveCappedRepository itemReactiveCappedRepository;
 
   @Autowired
-  ReactiveMongoOperations reactiveMongoOperations;
+  MongoOperations mongoOperations;
 
   @Autowired
   WebTestClient webTestClient;
@@ -43,8 +44,8 @@ public class ItemStreamsHandlerTest {
   @BeforeEach
   public void setUp() {
 
-    reactiveMongoOperations.dropCollection(ItemCapped.class);
-    reactiveMongoOperations.createCollection(ItemCapped.class,
+    mongoOperations.dropCollection(ItemCapped.class);
+    mongoOperations.createCollection(ItemCapped.class,
         CollectionOptions.empty().maxDocuments(20).size(50000).capped());
 
     Flux<ItemCapped> itemCappedFlux = Flux.interval(Duration.ofMillis(100))
